@@ -963,13 +963,13 @@ var modals = function modals() {
     var scroll = calcScroll();
 
     function calcScroll() {
-      var scrollDiv = document.createElement('div');
+      var scrollDiv = document.createElement("div");
       scrollDiv.classList.add("scroll_div");
       scrollDiv.style.height = "50px";
       scrollDiv.style.width = "50px";
-      scrollDiv.style.overflowY = 'scroll';
-      scrollDiv.style.visibility = 'hidden';
-      document.querySelector('body').append(scrollDiv);
+      scrollDiv.style.overflowY = "scroll";
+      scrollDiv.style.visibility = "hidden";
+      document.querySelector("body").append(scrollDiv);
       var scrollWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
       return scrollWidth;
     }
@@ -1001,9 +1001,10 @@ var modals = function modals() {
         modalWindow.classList.add("fadeOut");
         setTimeout(function () {
           modalWindow.style.display = "none";
-        }, 700);
+          modalWindow.classList.remove("fadeOut");
+        }, 500);
         document.body.style.overflow = "";
-        document.body.style.marginRight = '0px';
+        document.body.style.marginRight = "0px";
       });
     }); // click on other space rather than modal window
 
@@ -1018,22 +1019,32 @@ var modals = function modals() {
         modalWindow.classList.add("fadeOut");
         setTimeout(function () {
           modalWindow.style.display = "none";
-        }, 700);
+        }, 500);
         document.body.style.overflow = "";
-        document.body.style.marginRight = '0px';
+        document.body.style.marginRight = "0px";
       }
     });
   }
 
   function timerModal(selector, timer) {
     setTimeout(function () {
-      document.querySelector(selector).style.display = "block";
-      document.body.style.overflow = "hidden";
+      var display;
+      document.querySelectorAll("[data-modal]").forEach(function (elem) {
+        if (getComputedStyle(elem).display !== "none") {
+          display = "block";
+        }
+      });
+
+      if (!display) {
+        document.querySelector(selector).style.display = "block";
+        document.body.style.overflow = "hidden";
+      }
     }, timer);
   }
 
-  bindModal(".button-design", ".popup-design", ".popup-close");
-  timerModal(".popup", 6000);
+  bindModal(".button-design", ".popup-design", ".popup-design .popup-close");
+  bindModal(".button-consultation", ".popup-consultation", ".popup-consultation .popup-close");
+  timerModal(".popup-consultation", 6000);
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
