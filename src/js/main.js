@@ -1,11 +1,11 @@
 import modals from './modules/modals';
-import slider from './modules/slider';
+import sliders from './modules/sliders';
 
 window.addEventListener('DOMContentLoaded', () =>{
     "use strict";
 
     
     modals();
-    slider('.feedback-slider-item', 'horizontal', '.main-prev-btn', '.main-next-btn');
-    slider('.main-slider-item', 'vertical');
+    sliders('.feedback-slider-item', 'horizontal', '.main-prev-btn', '.main-next-btn');
+    sliders('.main-slider-item', 'vertical');
 });
