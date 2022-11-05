@@ -1,28 +1,18 @@
 const modals = () => {
+
+  let btnPressed = false;
+
   function bindModal(
     modalTriggerSelector,
     modalWindowSelector,
     dataModalCloseSelector,
-    closeOnOverlays = true
+    removeTrigger = false
   ) {
     const modalTrigger = document.querySelectorAll(modalTriggerSelector);
     const modalWindow = document.querySelector(modalWindowSelector);
     const modalClose = document.querySelectorAll(dataModalCloseSelector);
     const windows = document.querySelectorAll("[data-modal]");
-    const scroll = calcScroll();
-
-    function calcScroll() {
-      const scrollDiv = document.createElement("div");
-      scrollDiv.classList.add("scroll_div");
-      scrollDiv.style.height = "50px";
-      scrollDiv.style.width = "50px";
-      scrollDiv.style.overflowY = "scroll";
-      scrollDiv.style.visibility = "hidden";
-      document.querySelector("body").append(scrollDiv);
-
-      const scrollWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-      return scrollWidth;
-    }
+    let scroll = calcScroll();
 
     windows.forEach((e) => {
       e.style.display = "none";
@@ -33,12 +23,20 @@ const modals = () => {
       item.addEventListener("click", (e) => {
         e.preventDefault();
 
+        btnPressed = true;
+
         //close all modal windows
         windows.forEach((e) => {
           e.classList.remove("fadeIn");
           e.classList.add("fadeOut");
           e.style.display = "none";
         });
+
+        // remofe trigger if removeTrigger is true
+
+        if (removeTrigger) {
+          item.remove();
+        }
 
         modalWindow.classList.add("fadeIn", "animated");
         modalWindow.style.display = "block";
@@ -65,7 +63,7 @@ const modals = () => {
 
     // click on other space rather than modal window
     modalWindow.addEventListener("click", (e) => {
-      if (e.target && e.target === modalWindow && closeOnOverlays) {
+      if (e.target && e.target === modalWindow) {
         //close all modal windows
         windows.forEach((e) => {
           e.classList.remove("fadeIn");
@@ -96,8 +94,32 @@ const modals = () => {
       if (!display) {
         document.querySelector(selector).style.display = "block";
         document.body.style.overflow = "hidden";
+        let scroll = calcScroll();
+        document.body.style.marginRight = `${scroll}px`;
       }
     }, timer);
+  }
+
+  function calcScroll() {
+    const scrollDiv = document.createElement("div");
+    scrollDiv.classList.add("scroll_div");
+    scrollDiv.style.height = "50px";
+    scrollDiv.style.width = "50px";
+    scrollDiv.style.overflowY = "scroll";
+    scrollDiv.style.visibility = "hidden";
+    document.querySelector("body").append(scrollDiv);
+
+    const scrollWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+    return scrollWidth;
+  }
+
+  function showGiftAtEnd(giftWindowSelector){
+      window.addEventListener('scroll', ()=>{
+        if ( !btnPressed && ((window.innerHeight + window.scrollY) >= document.body.offsetHeight)) {
+          document.querySelector(giftWindowSelector).click();
+          console.log(giftWindowSelector);
+        }
+      });
   }
 
   bindModal(".button-design", ".popup-design", ".popup-design .popup-close");
@@ -106,8 +128,11 @@ const modals = () => {
     ".popup-consultation",
     ".popup-consultation .popup-close"
   );
+  bindModal(".fixed-gift", ".popup-gift", ".popup-gift .popup-close", true);
 
-  timerModal(".popup-consultation", 6000);
+  // timerModal(".popup-consultation", 60000);
+
+  showGiftAtEnd(".fixed-gift");
 };
 
 export default modals;

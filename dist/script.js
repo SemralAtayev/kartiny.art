@@ -931,11 +931,15 @@ module.exports = g;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
+/* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
+
 
 window.addEventListener('DOMContentLoaded', function () {
   "use strict";
 
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  Object(_modules_slider__WEBPACK_IMPORTED_MODULE_1__["default"])('.feedback-slider-item', 'horizontal', '.main-prev-btn', '.main-next-btn');
+  Object(_modules_slider__WEBPACK_IMPORTED_MODULE_1__["default"])('.main-slider-item', 'vertical');
 });
 
 /***/ }),
@@ -954,39 +958,34 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var modals = function modals() {
+  var btnPressed = false;
+
   function bindModal(modalTriggerSelector, modalWindowSelector, dataModalCloseSelector) {
-    var closeOnOverlays = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+    var removeTrigger = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     var modalTrigger = document.querySelectorAll(modalTriggerSelector);
     var modalWindow = document.querySelector(modalWindowSelector);
     var modalClose = document.querySelectorAll(dataModalCloseSelector);
     var windows = document.querySelectorAll("[data-modal]");
     var scroll = calcScroll();
-
-    function calcScroll() {
-      var scrollDiv = document.createElement("div");
-      scrollDiv.classList.add("scroll_div");
-      scrollDiv.style.height = "50px";
-      scrollDiv.style.width = "50px";
-      scrollDiv.style.overflowY = "scroll";
-      scrollDiv.style.visibility = "hidden";
-      document.querySelector("body").append(scrollDiv);
-      var scrollWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-      return scrollWidth;
-    }
-
     windows.forEach(function (e) {
       e.style.display = "none";
     }); //click on trigger to call modal block
 
     modalTrigger.forEach(function (item) {
       item.addEventListener("click", function (e) {
-        e.preventDefault(); //close all modal windows
+        e.preventDefault();
+        btnPressed = true; //close all modal windows
 
         windows.forEach(function (e) {
           e.classList.remove("fadeIn");
           e.classList.add("fadeOut");
           e.style.display = "none";
-        });
+        }); // remofe trigger if removeTrigger is true
+
+        if (removeTrigger) {
+          item.remove();
+        }
+
         modalWindow.classList.add("fadeIn", "animated");
         modalWindow.style.display = "block";
         modalWindow.classList.remove("fadeOut");
@@ -1009,7 +1008,7 @@ var modals = function modals() {
     }); // click on other space rather than modal window
 
     modalWindow.addEventListener("click", function (e) {
-      if (e.target && e.target === modalWindow && closeOnOverlays) {
+      if (e.target && e.target === modalWindow) {
         //close all modal windows
         windows.forEach(function (e) {
           e.classList.remove("fadeIn");
@@ -1038,16 +1037,145 @@ var modals = function modals() {
       if (!display) {
         document.querySelector(selector).style.display = "block";
         document.body.style.overflow = "hidden";
+        var scroll = calcScroll();
+        document.body.style.marginRight = "".concat(scroll, "px");
       }
     }, timer);
   }
 
+  function calcScroll() {
+    var scrollDiv = document.createElement("div");
+    scrollDiv.classList.add("scroll_div");
+    scrollDiv.style.height = "50px";
+    scrollDiv.style.width = "50px";
+    scrollDiv.style.overflowY = "scroll";
+    scrollDiv.style.visibility = "hidden";
+    document.querySelector("body").append(scrollDiv);
+    var scrollWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+    return scrollWidth;
+  }
+
+  function showGiftAtEnd(giftWindowSelector) {
+    window.addEventListener('scroll', function () {
+      if (!btnPressed && window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        document.querySelector(giftWindowSelector).click();
+        console.log(giftWindowSelector);
+      }
+    });
+  }
+
   bindModal(".button-design", ".popup-design", ".popup-design .popup-close");
   bindModal(".button-consultation", ".popup-consultation", ".popup-consultation .popup-close");
-  timerModal(".popup-consultation", 6000);
+  bindModal(".fixed-gift", ".popup-gift", ".popup-gift .popup-close", true); // timerModal(".popup-consultation", 60000);
+
+  showGiftAtEnd(".fixed-gift");
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
+
+/***/ }),
+
+/***/ "./src/js/modules/slider.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/slider.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var slider = function slider(sliderSelector, dir, prev, next) {
+  var sliderElement = document.querySelectorAll(sliderSelector);
+  var sliderIndex = 1;
+  var intervalIndex; // main function to initialise slider
+
+  var sliderInit = function sliderInit() {
+    if (sliderIndex > sliderElement.length) {
+      sliderIndex = 1;
+    }
+
+    if (sliderIndex < 1) {
+      sliderIndex = sliderElement.length;
+    }
+
+    sliderElement.forEach(function (item) {
+      item.style.display = "none";
+      item.classList.add("animated");
+    });
+    sliderElement[sliderIndex - 1].style.display = "block";
+  }; // function of intrval
+
+
+  var interval = function interval() {
+    var vertical = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+    if (vertical) {
+      intervalIndex = setInterval(function () {
+        sliderIndex += 1;
+        sliderInit();
+      }, 3000);
+    } else {
+      intervalIndex = setInterval(function () {
+        sliderIndex += 1;
+        sliderElement.forEach(function (item) {
+          item.classList.remove("fadeInLeft");
+          item.classList.add("fadeInRight");
+        });
+        sliderInit();
+      }, 3000);
+    }
+  };
+
+  var changeSlider = function changeSlider(n) {
+    sliderIndex += n;
+    sliderInit();
+  };
+
+  if (dir === "vertical") {
+    sliderElement.forEach(function (item) {
+      item.classList.add("fadeInDown");
+    });
+    interval(true);
+    sliderElement[0].parentNode.addEventListener("mouseenter", function () {
+      clearInterval(intervalIndex);
+    });
+    sliderElement[0].parentNode.addEventListener("mouseleave", function () {
+      interval(true);
+    });
+  } else {
+    var prevButton = document.querySelector(prev);
+    var nextButton = document.querySelector(next);
+    nextButton.addEventListener("click", function () {
+      sliderElement.forEach(function (item) {
+        item.classList.remove("fadeInLeft");
+        item.classList.add("fadeInRight");
+      });
+      changeSlider(1);
+    });
+    prevButton.addEventListener("click", function () {
+      sliderElement.forEach(function (item) {
+        item.classList.remove("fadeInRight");
+        item.classList.add("fadeInLeft");
+      });
+      changeSlider(-1);
+    });
+    interval();
+    sliderElement[0].parentNode.addEventListener("mouseenter", function () {
+      clearInterval(intervalIndex);
+    });
+    sliderElement[0].parentNode.addEventListener("mouseleave", function () {
+      interval();
+    });
+  }
+
+  sliderInit();
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (slider);
 
 /***/ })
 
