@@ -73,7 +73,6 @@ export default sliders;
 
 //my version of slider
 
-
 // const slider = (sliderSelector, dir, prev, next) => {
 //     const sliderElement = document.querySelectorAll(sliderSelector);
 //     let sliderIndex = 1;
