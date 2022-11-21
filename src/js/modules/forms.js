@@ -1,4 +1,5 @@
 // import checkForNumbers from "./checkForNumbers";
+import {request} from '../services/requests';
 
 const forms = () => {
   const forms = document.querySelectorAll("form");
@@ -19,15 +20,6 @@ const forms = () => {
   });
   };
 
-  // request variable
-  let request = async function (url, data) {
-    let fetchRequest = await fetch(url, {
-      method: "POST",
-      body: data,
-    });
-
-    return await fetchRequest.text();
-  };
 
   //messages : text
 
