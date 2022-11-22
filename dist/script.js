@@ -4407,6 +4407,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_mask__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/mask */ "./src/js/modules/mask.js");
 /* harmony import */ var _modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/checkTextInputs */ "./src/js/modules/checkTextInputs.js");
 /* harmony import */ var _modules_styles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/styles */ "./src/js/modules/styles.js");
+/* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
+
 
 
 
@@ -4424,7 +4426,55 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="name"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]');
   Object(_modules_styles__WEBPACK_IMPORTED_MODULE_5__["default"])('.button-styles', '#styles .row');
+  Object(_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])("#size", "#material", "#options", ".promocode", ".calc-price");
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/calc.js":
+/*!********************************!*\
+  !*** ./src/js/modules/calc.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var calc = function calc(sizeSelector, materialSelector, serviceSelector, promocode, resultSelecor) {
+  var sizeBlock = document.querySelector(sizeSelector),
+      materialBlock = document.querySelector(materialSelector),
+      servicelBlock = document.querySelector(serviceSelector),
+      promoBlock = document.querySelector(promocode),
+      resultBlock = document.querySelector(resultSelecor);
+  var sum = 0;
+
+  var calcFunc = function calcFunc() {
+    sum = Math.round(+sizeBlock.value * +materialBlock.value + +servicelBlock.value); // if(promoBlock.value === 'IWANTPOPART'){
+    //     sum = sum * 0.7;
+    // } else if (sizeBlock.value && materialBlock.value){
+    //     resultBlock.innerHTML = sum;
+    // } else if (sizeBlock.value == "" || materialBlock.value == ""){
+    //     resultBlock.innerHTML = "Не выбран размер или материал картины";
+    // }
+    // else {
+    // }
+
+    if (sizeBlock.value == "" || materialBlock.value == "") {
+      resultBlock.innerHTML = "Не выбран размер или материал картины";
+    } else if (promoBlock.value == "IWANTPOPART") {
+      resultBlock.innerHTML = Math.round(sum * 0.7);
+    } else {
+      resultBlock.innerHTML = sum;
+    }
+  };
+
+  sizeBlock.addEventListener("change", calcFunc);
+  materialBlock.addEventListener("change", calcFunc);
+  servicelBlock.addEventListener("change", calcFunc);
+  promoBlock.addEventListener("input", calcFunc);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (calc);
 
 /***/ }),
 
