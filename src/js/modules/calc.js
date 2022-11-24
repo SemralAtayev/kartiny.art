@@ -1,44 +1,40 @@
 const calc = (
   sizeSelector,
   materialSelector,
-  serviceSelector,
-  promocode,
-  resultSelecor,
+  optionsSelector,
+  promocodeSelector,
+  resBlock,
+  state,
 ) => {
-  const sizeBlock = document.querySelector(sizeSelector),
-    materialBlock = document.querySelector(materialSelector),
-    servicelBlock = document.querySelector(serviceSelector),
-    promoBlock = document.querySelector(promocode),
-    resultBlock = document.querySelector(resultSelecor);
+  const size = document.querySelector(sizeSelector),
+    material = document.querySelector(materialSelector),
+    options = document.querySelector(optionsSelector),
+    promocode = document.querySelector(promocodeSelector),
+    res = document.querySelector(resBlock);
   let sum = 0;
 
-  const calcFunc = function () {
-    sum = Math.round((+sizeBlock.value) * (+materialBlock.value) + (+servicelBlock.value));
 
-    // if(promoBlock.value === 'IWANTPOPART'){
-    //     sum = sum * 0.7;
-    // } else if (sizeBlock.value && materialBlock.value){
-    //     resultBlock.innerHTML = sum;
-    // } else if (sizeBlock.value == "" || materialBlock.value == ""){
-    //     resultBlock.innerHTML = "Не выбран размер или материал картины";
-    // }
-    // else {
+  const getSum = function () {
+    sum = Math.round((+size.value) * (+material.value) + (+options.value));
 
-    // }
-
-    if (sizeBlock.value == "" || materialBlock.value == "") {
-      resultBlock.innerHTML = "Не выбран размер или материал картины";
-    } else if (promoBlock.value == "IWANTPOPART") {
-        resultBlock.innerHTML = Math.round(sum * 0.7);
+    if (size.value == "" || material.value == "") {
+      res.innerHTML = "Не хватает одного параметра";
+    } else if (promocode.value == "IWANTPOPART") {
+      res.innerHTML = Math.round(sum * 0.7);
     } else {
-        resultBlock.innerHTML = sum;
-    }
+      res.innerHTML = sum;
+    } 
+    state.summa = sum;
+   
   };
 
-  sizeBlock.addEventListener("change", calcFunc);
-  materialBlock.addEventListener("change", calcFunc);
-  servicelBlock.addEventListener("change", calcFunc);
-  promoBlock.addEventListener("input", calcFunc);
+  size.addEventListener('change', getSum);
+  material.addEventListener('change', getSum);
+  options.addEventListener('change', getSum);
+  promocode.addEventListener('input', getSum);
+  
+ 
 };
+
 
 export default calc;

@@ -4418,15 +4418,16 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('DOMContentLoaded', function () {
   "use strict";
 
+  var stateVar = {};
+  Object(_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])("#size", "#material", "#options", ".promocode", ".calc-price", stateVar);
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_0__["default"])();
   Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])('.feedback-slider-item', 'horizontal', '.main-prev-btn', '.main-next-btn');
   Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])('.main-slider-item', 'vertical');
-  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])();
   Object(_modules_mask__WEBPACK_IMPORTED_MODULE_3__["default"])('[name="phone"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="name"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]');
   Object(_modules_styles__WEBPACK_IMPORTED_MODULE_5__["default"])('.button-styles', '#styles .row');
-  Object(_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])("#size", "#material", "#options", ".promocode", ".calc-price");
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])(stateVar);
 });
 
 /***/ }),
@@ -4440,38 +4441,32 @@ window.addEventListener('DOMContentLoaded', function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var calc = function calc(sizeSelector, materialSelector, serviceSelector, promocode, resultSelecor) {
-  var sizeBlock = document.querySelector(sizeSelector),
-      materialBlock = document.querySelector(materialSelector),
-      servicelBlock = document.querySelector(serviceSelector),
-      promoBlock = document.querySelector(promocode),
-      resultBlock = document.querySelector(resultSelecor);
+var calc = function calc(sizeSelector, materialSelector, optionsSelector, promocodeSelector, resBlock, state) {
+  var size = document.querySelector(sizeSelector),
+      material = document.querySelector(materialSelector),
+      options = document.querySelector(optionsSelector),
+      promocode = document.querySelector(promocodeSelector),
+      res = document.querySelector(resBlock);
   var sum = 0;
 
-  var calcFunc = function calcFunc() {
-    sum = Math.round(+sizeBlock.value * +materialBlock.value + +servicelBlock.value); // if(promoBlock.value === 'IWANTPOPART'){
-    //     sum = sum * 0.7;
-    // } else if (sizeBlock.value && materialBlock.value){
-    //     resultBlock.innerHTML = sum;
-    // } else if (sizeBlock.value == "" || materialBlock.value == ""){
-    //     resultBlock.innerHTML = "Не выбран размер или материал картины";
-    // }
-    // else {
-    // }
+  var getSum = function getSum() {
+    sum = Math.round(+size.value * +material.value + +options.value);
 
-    if (sizeBlock.value == "" || materialBlock.value == "") {
-      resultBlock.innerHTML = "Не выбран размер или материал картины";
-    } else if (promoBlock.value == "IWANTPOPART") {
-      resultBlock.innerHTML = Math.round(sum * 0.7);
+    if (size.value == "" || material.value == "") {
+      res.innerHTML = "Не хватает одного параметра";
+    } else if (promocode.value == "IWANTPOPART") {
+      res.innerHTML = Math.round(sum * 0.7);
     } else {
-      resultBlock.innerHTML = sum;
+      res.innerHTML = sum;
     }
+
+    state.summa = sum;
   };
 
-  sizeBlock.addEventListener("change", calcFunc);
-  materialBlock.addEventListener("change", calcFunc);
-  servicelBlock.addEventListener("change", calcFunc);
-  promoBlock.addEventListener("input", calcFunc);
+  size.addEventListener('change', getSum);
+  material.addEventListener('change', getSum);
+  options.addEventListener('change', getSum);
+  promocode.addEventListener('input', getSum);
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (calc);
@@ -4543,7 +4538,7 @@ __webpack_require__.r(__webpack_exports__);
 // import checkForNumbers from "./checkForNumbers";
 
 
-var forms = function forms() {
+var forms = function forms(state) {
   var forms = document.querySelectorAll("form");
   var inputs = document.querySelectorAll("input");
   var upload = document.querySelectorAll('[name = "upload"]'); //   checkForNumbers('input[name = "user_phone"]');
@@ -4617,6 +4612,13 @@ var forms = function forms() {
         var formData = new FormData(form);
         var api;
         form.closest(".popup-design") || form.classList.contains("calc_form") ? api = pathOfServer.design : api = pathOfServer.orderCall;
+
+        if (form.classList.contains('calc_form')) {
+          for (var key in state) {
+            formData.append(key, state[key]);
+          }
+        }
+
         Object(_services_requests__WEBPACK_IMPORTED_MODULE_7__["request"])(api, formData).then(function (request) {
           imgMessage.setAttribute("src", imgStatusPath.ok);
           textBlock.textContent = messagesToShow.sucsess;

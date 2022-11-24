@@ -1,11 +1,10 @@
 // import checkForNumbers from "./checkForNumbers";
 import {request} from '../services/requests';
 
-const forms = () => {
+const forms = (state) => {
   const forms = document.querySelectorAll("form");
   const inputs = document.querySelectorAll("input");
   let upload = document.querySelectorAll('[name = "upload"]');
-
 
   //   checkForNumbers('input[name = "user_phone"]');
 
@@ -90,9 +89,14 @@ const forms = () => {
 
         let formData = new FormData(form);
         let api;
-        form.closest(".popup-design") || form.classList.contains("calc_form")
-          ? (api = pathOfServer.design)
-          : (api = pathOfServer.orderCall);
+        form.closest(".popup-design") || form.classList.contains("calc_form") ? (api = pathOfServer.design) : (api = pathOfServer.orderCall);
+
+        if(form.classList.contains('calc_form')){
+          for (let key in state) {
+            formData.append(key, state[key]);
+          }       
+        } 
+       
         
 
         request(api, formData)

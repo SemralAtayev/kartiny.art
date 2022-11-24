@@ -6,18 +6,24 @@ import checkTextInputs from './modules/checkTextInputs';
 import styles from './modules/styles';
 import calc from './modules/calc';
 
+
+
+
+
 window.addEventListener('DOMContentLoaded', () =>{
     "use strict";
 
-    
+    let stateVar = {}; 
+    calc("#size", "#material", "#options", ".promocode", ".calc-price", stateVar);
+
     modals();
     sliders('.feedback-slider-item', 'horizontal', '.main-prev-btn', '.main-next-btn');
-    sliders('.main-slider-item', 'vertical');
-    forms();
+    sliders('.main-slider-item', 'vertical');    
     mask('[name="phone"]');
     checkTextInputs('[name="name"]');
     checkTextInputs('[name="message"]');
     styles('.button-styles', '#styles .row');
-    calc("#size", "#material", "#options", ".promocode", ".calc-price");
+    
+    forms(stateVar);
  
 });
