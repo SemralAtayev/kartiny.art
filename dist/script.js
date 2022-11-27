@@ -4408,6 +4408,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/checkTextInputs */ "./src/js/modules/checkTextInputs.js");
 /* harmony import */ var _modules_styles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/styles */ "./src/js/modules/styles.js");
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
+/* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
+
 
 
 
@@ -4428,6 +4430,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]');
   Object(_modules_styles__WEBPACK_IMPORTED_MODULE_5__["default"])('.button-styles', '#styles .row');
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])(stateVar);
+  Object(_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])(".portfolio-menu li", ".portfolio-wrapper > div");
 });
 
 /***/ }),
@@ -4501,6 +4504,65 @@ var checkTextInputs = function checkTextInputs(selector) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (checkTextInputs);
+
+/***/ }),
+
+/***/ "./src/js/modules/filter.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/filter.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var filter = function filter(portfolioMenuSelector, portfolioWrapperSelector) {
+  var triggersPrent = document.querySelectorAll(portfolioMenuSelector);
+  var portfolioWrapper = document.querySelectorAll(portfolioWrapperSelector);
+  var portfolioNo = document.querySelector(".portfolio-no");
+  triggersPrent.forEach(function (triggerItem) {
+    if (triggerItem.classList.contains("all")) {
+      triggerItem.classList.add("active");
+    } else {
+      triggerItem.classList.remove("active");
+    }
+
+    triggerItem.addEventListener("click", function (e) {
+      if (e.target) {
+        triggersPrent.forEach(function (item) {
+          item.classList.remove("active");
+        });
+        e.target.classList.add("active");
+      }
+
+      var triggerItemClass = triggerItem.classList[0];
+
+      if (triggerItemClass == "grandmother" || triggerItemClass == "granddad") {
+        portfolioWrapper.forEach(function (item) {
+          item.classList.add("animated", "fadeIn");
+          item.style.display = "none";
+        });
+        portfolioNo.style.display = "block";
+      } else {
+        portfolioWrapper.forEach(function (item) {
+          item.classList.add("animated", "fadeIn");
+          item.style.display = "none";
+          portfolioNo.style.display = "none";
+
+          if (item.classList.contains(triggerItemClass)) {
+            item.style.display = "block";
+          }
+        });
+      }
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (filter);
 
 /***/ }),
 

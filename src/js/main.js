@@ -5,7 +5,7 @@ import mask from './modules/mask';
 import checkTextInputs from './modules/checkTextInputs';
 import styles from './modules/styles';
 import calc from './modules/calc';
-
+import filter from './modules/filter';
 
 
 
@@ -25,5 +25,6 @@ window.addEventListener('DOMContentLoaded', () =>{
     styles('.button-styles', '#styles .row');
     
     forms(stateVar);
+    filter(".portfolio-menu li",  ".portfolio-wrapper > div");
  
 });
