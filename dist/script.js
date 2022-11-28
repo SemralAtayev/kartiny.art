@@ -4409,6 +4409,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_styles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/styles */ "./src/js/modules/styles.js");
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
 /* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
+/* harmony import */ var _modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pictureSize */ "./src/js/modules/pictureSize.js");
+
 
 
 
@@ -4431,6 +4433,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_styles__WEBPACK_IMPORTED_MODULE_5__["default"])('.button-styles', '#styles .row');
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])(stateVar);
   Object(_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])(".portfolio-menu li", ".portfolio-wrapper > div");
+  Object(_modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__["default"])('.sizes-block');
 });
 
 /***/ }),
@@ -4525,14 +4528,8 @@ var filter = function filter(portfolioMenuSelector, portfolioWrapperSelector) {
   var portfolioWrapper = document.querySelectorAll(portfolioWrapperSelector);
   var portfolioNo = document.querySelector(".portfolio-no");
   triggersPrent.forEach(function (triggerItem) {
-    if (triggerItem.classList.contains("all")) {
-      triggerItem.classList.add("active");
-    } else {
-      triggerItem.classList.remove("active");
-    }
-
     triggerItem.addEventListener("click", function (e) {
-      if (e.target) {
+      if (e.target && e.target.tagName == "LI") {
         triggersPrent.forEach(function (item) {
           item.classList.remove("active");
         });
@@ -4910,6 +4907,49 @@ var modals = function modals() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
+
+/***/ }),
+
+/***/ "./src/js/modules/pictureSize.js":
+/*!***************************************!*\
+  !*** ./src/js/modules/pictureSize.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.slice */ "./node_modules/core-js/modules/es.array.slice.js");
+/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+var pictureSize = function pictureSize(pictureSizeSelector) {
+  var imageBlocks = document.querySelectorAll(pictureSizeSelector);
+  imageBlocks.forEach(function (block) {
+    block.querySelector("img").classList.add("animated", "fadeIn");
+    block.addEventListener("mouseenter", function () {
+      var imageSrc = block.querySelector("img").getAttribute("src").slice(0, -4) + "-1.png";
+      block.querySelector("img").src = imageSrc;
+      var detailsOfImage = block.querySelectorAll("p:not(.sizes-hit)");
+      detailsOfImage.forEach(function (el) {
+        el.style.display = "none";
+      });
+    });
+    block.addEventListener("mouseleave", function () {
+      var imageSrc = block.querySelector("img").getAttribute("src").slice(0, -6) + ".png";
+      block.querySelector("img").src = imageSrc;
+      var detailsOfImage = block.querySelectorAll("p:not(.sizes-hit)");
+      detailsOfImage.forEach(function (el) {
+        el.style.display = "block";
+      });
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (pictureSize);
 
 /***/ }),
 

@@ -6,6 +6,7 @@ import checkTextInputs from './modules/checkTextInputs';
 import styles from './modules/styles';
 import calc from './modules/calc';
 import filter from './modules/filter';
+import pictureSize from './modules/pictureSize';
 
 
 
@@ -26,5 +27,6 @@ window.addEventListener('DOMContentLoaded', () =>{
     
     forms(stateVar);
     filter(".portfolio-menu li",  ".portfolio-wrapper > div");
+    pictureSize('.sizes-block');
  
 });

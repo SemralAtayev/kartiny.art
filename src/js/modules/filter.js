@@ -4,14 +4,9 @@ const filter = (portfolioMenuSelector, portfolioWrapperSelector) => {
   const portfolioNo = document.querySelector(".portfolio-no");
 
   triggersPrent.forEach((triggerItem) => {
-    if (triggerItem.classList.contains("all")) {
-      triggerItem.classList.add("active");
-    } else {
-      triggerItem.classList.remove("active");
-    }
 
     triggerItem.addEventListener("click", (e) => {
-      if (e.target) {
+      if (e.target && e.target.tagName == "LI") {
         triggersPrent.forEach((item) => {
           item.classList.remove("active");
         });
