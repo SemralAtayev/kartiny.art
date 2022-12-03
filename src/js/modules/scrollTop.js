@@ -32,16 +32,13 @@ const scrollTop = (upSelector) => {
           start = time;
         }
 
-        // console.log(toBlock);
-        // console.log(widthTop);
       
        
 
         let progress = time - start,
           r = toBlock < 0 ? Math.max(widthTop - progress / speed, widthTop + toBlock) : Math.min(widthTop + progress / speed, widthTop + toBlock);
 
-          console.log(widthTop + toBlock);
-          console.log(widthTop - progress / speed);
+      
 
         document.documentElement.scrollTo(0, r);
 
