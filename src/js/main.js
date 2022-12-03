@@ -7,8 +7,9 @@ import styles from './modules/styles';
 import calc from './modules/calc';
 import filter from './modules/filter';
 import pictureSize from './modules/pictureSize';
-
-
+import accordeon from './modules/accordeon';
+import burgerMenu from './modules/burgerMenu';
+import scrolling from './modules/scrollTop';
 
 
 window.addEventListener('DOMContentLoaded', () =>{
@@ -28,5 +29,8 @@ window.addEventListener('DOMContentLoaded', () =>{
     forms(stateVar);
     filter(".portfolio-menu li",  ".portfolio-wrapper > div");
     pictureSize('.sizes-block');
+    accordeon('.accordion-heading');
+    burgerMenu('.burger', '.burger-menu');
+    scrolling('.pageup');
  
 });

@@ -4410,6 +4410,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
 /* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
 /* harmony import */ var _modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pictureSize */ "./src/js/modules/pictureSize.js");
+/* harmony import */ var _modules_accordeon__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/accordeon */ "./src/js/modules/accordeon.js");
+/* harmony import */ var _modules_burgerMenu__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/burgerMenu */ "./src/js/modules/burgerMenu.js");
+/* harmony import */ var _modules_scrollTop__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/scrollTop */ "./src/js/modules/scrollTop.js");
+
+
+
 
 
 
@@ -4434,7 +4440,67 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])(stateVar);
   Object(_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])(".portfolio-menu li", ".portfolio-wrapper > div");
   Object(_modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__["default"])('.sizes-block');
+  Object(_modules_accordeon__WEBPACK_IMPORTED_MODULE_9__["default"])('.accordion-heading');
+  Object(_modules_burgerMenu__WEBPACK_IMPORTED_MODULE_10__["default"])('.burger', '.burger-menu');
+  Object(_modules_scrollTop__WEBPACK_IMPORTED_MODULE_11__["default"])('.pageup');
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/accordeon.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/accordeon.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var accordeon = function accordeon(headerSelector) {
+  var headers = document.querySelectorAll(headerSelector);
+  headers.forEach(function (element) {
+    element.addEventListener('click', function () {
+      element.nextElementSibling.classList.toggle('active');
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (accordeon);
+
+/***/ }),
+
+/***/ "./src/js/modules/burgerMenu.js":
+/*!**************************************!*\
+  !*** ./src/js/modules/burgerMenu.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var burgerMenu = function burgerMenu(burgerTrigger, burgerMenuSelector) {
+  var burgerIcon = document.querySelector(burgerTrigger);
+  var burgerMenu = document.querySelector(burgerMenuSelector);
+  burgerMenu.style.display = "none";
+  burgerIcon.addEventListener("click", function () {
+    if (getComputedStyle(burgerMenu).display == "none" && window.screen.availWidth < 993) {
+      burgerMenu.style.display = "block";
+    } else {
+      burgerMenu.style.display = "none";
+    }
+  });
+  window.addEventListener("resize", function () {
+    if (window.screen.availWidth > 992) {
+      burgerMenu.style.display = "none";
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (burgerMenu);
 
 /***/ }),
 
@@ -4950,6 +5016,68 @@ var pictureSize = function pictureSize(pictureSizeSelector) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (pictureSize);
+
+/***/ }),
+
+/***/ "./src/js/modules/scrollTop.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/scrollTop.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var scrollTop = function scrollTop(upSelector) {
+  var upElem = document.querySelector(upSelector);
+  window.addEventListener("scroll", function () {
+    if (document.documentElement.scrollTop > 1650) {
+      upElem.classList.add("animated", "fadeIn");
+      upElem.classList.remove("fadeOut");
+    } else {
+      upElem.classList.add("fadeOut");
+      upElem.classList.remove("fadeIn");
+    }
+  });
+  var links = document.querySelectorAll('[href^="#"]'),
+      speed = 0.3;
+  links.forEach(function (link) {
+    link.addEventListener("click", function (event) {
+      event.preventDefault();
+      var widthTop = document.documentElement.scrollTop,
+          hash = this.hash,
+          toBlock = document.querySelector(hash).getBoundingClientRect().top,
+          start = null;
+      requestAnimationFrame(step);
+
+      function step(time) {
+        if (start === null) {
+          start = time;
+        } // console.log(toBlock);
+        // console.log(widthTop);
+
+
+        var progress = time - start,
+            r = toBlock < 0 ? Math.max(widthTop - progress / speed, widthTop + toBlock) : Math.min(widthTop + progress / speed, widthTop + toBlock);
+        console.log(widthTop + toBlock);
+        console.log(widthTop - progress / speed);
+        document.documentElement.scrollTo(0, r);
+
+        if (r != widthTop + toBlock) {
+          requestAnimationFrame(step);
+        } else {
+          location.hash = hash;
+        }
+      }
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (scrollTop);
 
 /***/ }),
 

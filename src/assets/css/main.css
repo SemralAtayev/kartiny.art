@@ -907,6 +907,23 @@ h4 {
   background-color: #f7e7e6;
   padding: 3rem 4rem;
 }
+
+.often-questions .accordion-block{
+  height: 0px;
+  visibility: hidden;
+  opacity: 0;
+  padding: 0px 0px;
+  margin-top: 0;
+  transition: all .2s ease-in;
+}
+.often-questions .accordion-block.active{
+  height: auto;
+  visibility: visible;
+  opacity: 1;
+  padding: 3rem 4rem;
+  margin-top: inherit;
+  transition: all .4s ease-in;
+}
 .often-questions .accordion-block:before {
   content: '';
   position: absolute;
@@ -1261,6 +1278,20 @@ h4 {
 
 .status{
   text-align: center;
+}
+
+.pageup {
+  opacity: 0;
+width: 26px ;
+height: 26px;
+position: fixed;
+bottom: 100px;
+right: 5%;
+z-index: 30;
+background-color: #fff;
+cursor: pointer;
+border: 1px solid white;
+  transition: 1s all;
 }
 
 @media (max-width: 1399px) {
